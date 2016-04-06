@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Piratechest</title>
+    <style type="text/css">
+        html, body {
+          height: auto;
+          font-size: 12px;
+          min-width: 10em;
+        }
+        .magnet {
+          min-width: 20em;
+          padding: 0.2em;
+          text-decoration: none;
+          display: block;
+          font-family: monospace;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .magnet:before {
+          content: ".";
+          color: transparent;
+          height: 1.2em;
+          width: 1.2em;
+          display: inline-block;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-image: url("magnet.png");
+        }
+
+        .magnet:hover {
+          text-decoration: underline;
+        }
+
+        em {
+          display: block;
+          padding: 0.2em;
+          margin-bottom: 0.5em;
+        }
+
+        .search {
+          display: block;
+          padding: 0.4em;
+        }
+    </style>
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <div id="piratechest-menu"><em>Looking for hashes...</em></div>
+    <script type="text/javascript" src="menu.js"></script>
+  </body>
+</html>
