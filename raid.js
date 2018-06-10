@@ -24,7 +24,8 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
         if (sender.tab && sender.tab.id) {
             tabs[sender.tab.id] = {
                 count: numberOfMagnets,
-                magnets: request.magnets
+                magnets: request.magnets,
+                url: request.url
             }
         }
         if (sender.tab.id == currentTab) {

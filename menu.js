@@ -32,15 +32,16 @@ function updateMenu(data) {
     document.body.innerHTML = ""
 
     if (data && data.count > 0) {
-        e.innerHTML = 'Found (' + data.count + ') hashes:'
-        document.body.appendChild( createSearch() )
+        e.innerHTML = "Url: " + data.url
+        e.innerHTML += 'Found (' + data.count + ') hashes:'
+        // document.body.appendChild( createSearch() )
         document.body.appendChild( e )
         for (var m in data.magnets) {
             var link = document.createElement('a')
             link.innerHTML = data.magnets[m]
             link.className = "magnet"
             link.target = "_blank"
-            link.href = "magnet:?xt=urn:btih:" + m
+            link.href = "magnet:?xt=urn:btih:" + m + "&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Fopentor.org%3A2710&tr=udp%3A%2F%2Ftracker.ccc.de%3A80&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969";
             link.title = data.magnets[m]
             document.body.appendChild( link )
         }

@@ -26,7 +26,7 @@ function raid() {
     for (var i=0; i < ofInterest.length; i++) {
         
         var match = ofInterest[i].nodeValue.match( magnetRegex );
-        var href = "magnet:?xt=urn:btih:" + match[0];
+        var href = "magnet:?xt=urn:btih:" + match[0] + "&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Fopentor.org%3A2710&tr=udp%3A%2F%2Ftracker.ccc.de%3A80&tr=udp%3A%2F%2Ftracker.blackunicorn.xyz%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969";
         var title = ofInterest[i].parentElement.closest('.rc').querySelector('.r').innerText
         magnets[ match[0] ] = title;
 
@@ -46,7 +46,8 @@ function raid() {
     try {
         chrome.runtime.sendMessage({
             id: "piratechest",
-            magnets: magnets
+            magnets: magnets,
+            url: window.location.href
         }, function(response) {
             // console.log(response);
         });
