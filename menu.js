@@ -15,7 +15,7 @@ function createSearch() {
 function doSearch() {
     var s = this;
     var prefix = "https://google.com#q="
-    var postfix = " infoHash site:thepiratebay.se"
+    var postfix = " infoHash"
     var input = s.querySelector('.search').value;
     chrome.tabs.create({
         url: prefix + encodeURIComponent( input + postfix )
@@ -30,12 +30,13 @@ function updateMenu(data) {
     var s = createSearch()
 
     document.body.innerHTML = ""
+    document.body.appendChild( s )
+
+    e.innerHTML = 'Found (' + (data ? data.count : 0) + ') hashes:'
+    document.body.appendChild( e )
 
     if (data && data.count > 0) {
-        e.innerHTML = "Url: " + data.url
-        e.innerHTML += 'Found (' + data.count + ') hashes:'
-        // document.body.appendChild( createSearch() )
-        document.body.appendChild( e )
+        
         for (var m in data.magnets) {
             var link = document.createElement('a')
             link.innerHTML = data.magnets[m]
@@ -45,10 +46,6 @@ function updateMenu(data) {
             link.title = data.magnets[m]
             document.body.appendChild( link )
         }
-    } else {        
-        e.innerHTML = 'No hashes found.'
-        document.body.appendChild( createSearch() )
-        document.body.appendChild( e )
     }
 }
 
@@ -62,15 +59,17 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("putmenu")
             updateMenu( request.data );
             chrome.browserAction.setBadgeText({
-                text: request.data ? request.data.count.toString() : ""
+                text: request.data ? request.data.count.toString() : "",
+                tabId: request.tabId
             }, function(){});
         }   
     });
 
     chrome.runtime.sendMessage({ method: "piratechest-getmenu" }, function(res){
+        console.log('piratechest-getmenu callback', res)
         updateMenu( res.data );
     });
 
-    updateMenu({});
+    // updateMenu({});
 });
 

@@ -3,23 +3,25 @@ var tabs = {}
 var currentTab = null;
 
 function isChromePage(){
-    return document.location.href.indexOf("chrome") == 0;
+    return document.location.href.indexOf("chrome://") == 0;
 }
 
 
 chrome.tabs.onActivated.addListener(function(tab) {
+    console.log('tab change', tab)
     currentTab = tab.tabId;
     chrome.runtime.sendMessage({
         method: "piratechest-putmenu",
-        data: tabs[tab.tabId]
+        data: tabs[tab.tabId],
+        tabId: tab.tabId
     });
 });
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 
     if (request.id == "piratechest") {    
-
-        var numberOfMagnets =Object.keys(request.magnets).length;
+        console.log('recieving data', request, sender)
+        var numberOfMagnets = Object.keys(request.magnets).length;
 
         if (sender.tab && sender.tab.id) {
             tabs[sender.tab.id] = {
@@ -27,19 +29,19 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
                 magnets: request.magnets,
                 url: request.url
             }
-        }
-        if (sender.tab.id == currentTab) {
             chrome.browserAction.setBadgeText({
-                text: numberOfMagnets.toString()
+                text: numberOfMagnets.toString(),
+                tabId: sender.tab.id
             });
-            
         }
     }
 
     if (request.method == "piratechest-getmenu") {
+        console.log('getting data')
         sendResponse({
             from: "piratechest-getmenu",
-            data: tabs[currentTab]
+            data: tabs[currentTab],
+            tabId: currentTab
         });
     }
 });
